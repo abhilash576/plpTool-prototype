@@ -1150,7 +1150,7 @@ public class Main extends Application
 		Menu tools = new Menu("Tools");
 		MenuItem itemOptions = new MenuItem("Options");
 		itemOptions.setOnAction((event) -> {
-			// TODO: Add Event for menu item
+			OptionsFrame.options();
 		});
 		
 		Menu modules = new Menu("Modules");
