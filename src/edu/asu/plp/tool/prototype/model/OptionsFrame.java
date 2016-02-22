@@ -16,16 +16,53 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import moore.fx.components.Components;
- 
+
+import java.util.List;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import edu.asu.plp.tool.prototype.view.ConsolePane;
+
+
 public abstract class OptionsFrame extends Pane {
-   
+	
+	static CheckBox fontCheckBox = new CheckBox();
+	static Label fontNamelabel = new Label();
+	static ComboBox<String> cmbFontName = new ComboBox<String>();
+	static Label fontSizelabel = new Label();
+	static ComboBox<Integer> cmbFontSize = new ComboBox<Integer>();
+    static TextArea txtFontPreview = new TextArea();
+    static Label simulatorlabel = new Label();
+    static Slider slider = new Slider();
+    static CheckBox cbs = new CheckBox();
+    static CheckBox cbs2 = new CheckBox();
+    static CheckBox cbs3 = new CheckBox();
+    static CheckBox cbs4 = new CheckBox();
+    static CheckBox cbs5 = new CheckBox();
+    static CheckBox cbs6 = new CheckBox();
+    static CheckBox cbp = new CheckBox();
+    static Label programlabel = new Label();
+    static TextField programtext = new TextField ();
+    static Label programlabel2 = new Label();
+    static TextField programtext2 = new TextField ();
+    static Label programlabel3 = new Label();
+    static CheckBox cbp2 = new CheckBox();
+    static CheckBox cbm = new CheckBox();
+    static CheckBox cbm2  = new CheckBox();
+    static CheckBox cbv = new CheckBox();
+    static CheckBox cbv2 = new CheckBox();
+	static CheckBox cbv3 = new CheckBox();
+	
 	public static void options() {
 		Stage optionsWindowStage = new Stage();
 		Parent myPane = optionFrameTabs();
@@ -36,254 +73,302 @@ public abstract class OptionsFrame extends Pane {
 		optionsWindowStage.show();
 		}
 
-        private static Parent optionFrameTabs() {
+        private static  Parent optionFrameTabs() {
         BorderPane border = new BorderPane();
 		border.setPadding(new Insets(20));
 		GridPane grid = new GridPane();
 		HBox buttons = new HBox(10);
 		grid.setHgap(10);
 		grid.setVgap(30);
-		grid.setPadding(new Insets(0, 0, 0, 0));
-
-          TabPane tabPane = new TabPane();
-		 
+		
+        TabPane tabPane = new TabPane();
+        AnchorPane fontAnchorPane = new AnchorPane();
 		  //font Tabs
-		  Tab fontTab = new Tab();
+          Tab fontTab = new Tab();
 		  fontTab.setText("Font");
-		  VBox font_vBox = new VBox();
-		  CheckBox cbf = new CheckBox("Enable sysntax highlighting");
-		  cbf.setStyle("-fx-padding: 2;");
-		  cbf.setIndeterminate(false);
-		  cbf.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
-		  
-		  Label fontlabel = new Label("Font:");
-		  fontlabel.setStyle("-fx-padding: 2;");
-		  
-		    String Monospaced ="Monospaced";
-			ComboBox<String> comboBox = new ComboBox<String>();
-			comboBox.getItems().addAll(Monospaced);
-			comboBox.setValue(Monospaced);
-			comboBox.setOnAction((event) ->{
-				// TODO: Add Event for Checkbox
-			  });
-			
-		   
-		   Label fontlabel2 = new Label("Font size:");
-           fontlabel2.setStyle("-fx-padding: 2;");
-           
-			   String num ="8";
-			   String num2 ="10";
-			   String num3 ="12";
-				ComboBox<String> comboBox2 = new ComboBox<String>();
-				comboBox2.getItems().addAll(num,num2,num3);
-				comboBox2.setValue(num3);
-				comboBox2.setOnAction((event) ->{
-					// TODO: Add Event for comboBox
-				  });
-				
-				TextArea fontText = new TextArea();
-				fontText.setText("The quick brown fox jumps over the lazy dog");
-				fontText.setOnScroll((event) ->{
-					// TODO: Add Event for comboBox
-				  });
-				
-		  font_vBox.getChildren().addAll(cbf,fontlabel,comboBox,fontlabel2,comboBox2,fontText);
-		  fontTab.setContent(font_vBox);
-		  tabPane.getTabs().add(fontTab);
 		 
+		  // font first check box
+		  fontCheckBox.setText("Enable sysntax highlighting");
+		  fontCheckBox.setIndeterminate(false);
+		  AnchorPane.setTopAnchor(fontCheckBox, 10.0);
+		  AnchorPane.setLeftAnchor(fontCheckBox, 10.0);
+	      fontCheckBox.setOnAction((event) ->{
+			// TODO: Add Event for Checkbox
+			  boolean selected = fontCheckBox.isSelected();
+		
+			 });
+		 //font name label
+		  fontNamelabel.setText("Font:");
+		  AnchorPane.setTopAnchor(fontNamelabel, 50.0);
+		  AnchorPane.setLeftAnchor(fontNamelabel, 10.0);
+		  
+		   // font name ComboBox<
+		  String Monospaced ="Monospaced";
+		  List<String> familiesList = Font.getFontNames();
+	      ObservableList<String> familiesObservableList = 
+	                FXCollections.observableArrayList(familiesList);
+	      cmbFontName.setItems(familiesObservableList);
+	      cmbFontName.setValue(Monospaced);
+	      cmbFontName.setEditable(true);  
+	      cmbFontName.setPrefWidth(320);
+	      AnchorPane.setTopAnchor(cmbFontName, 50.0);
+		  AnchorPane.setLeftAnchor(cmbFontName, 75.0);
+		  cmbFontName.valueProperty().addListener(new ChangeListener<String>() {
+       	   @Override 
+       	   public void changed(ObservableValue ov, String t, String t1) { 
+       	   txtFontPreview.setFont(new Font(t1, Integer.parseInt(cmbFontSize.getValue().toString()))); 
+       	   } 
+       	   });
+	        
+	       // font size label
+	       fontSizelabel.setText("Font Size:");
+	       AnchorPane.setTopAnchor(fontSizelabel, 100.0);
+		   AnchorPane.setLeftAnchor(fontSizelabel, 10.0);
+           //ComboBox<Integer> cmbFontSize = new ComboBox<Integer>();
+           int num = 8;
+           int num2 = 10;
+           int num3 = 11;
+           int num4 = 12;
+           int num5 = 13;
+           int num6 = 14;
+           int num7 = 16;
+           int num8 = 24;
+           int num9 = 36;
+           int num10 = 48;
+           int num11 = 72;
+           cmbFontSize.getItems().addAll(num, num2, num3,num4,num5,num6,num7,num8,num9,num10,num11);
+           cmbFontSize.setEditable(true);  
+           cmbFontSize.setValue(num4);
+           cmbFontSize.setPrefWidth(320);
+           AnchorPane.setTopAnchor(cmbFontSize, 100.0);
+		   AnchorPane.setLeftAnchor(cmbFontSize, 75.0);
+		   cmbFontSize.valueProperty().addListener(new ChangeListener<Integer>() {
+        	   public void changed(ObservableValue ov, Integer  t, Integer  t1) { 
+        	   txtFontPreview.setFont(new Font(cmbFontName.getValue().toString(),t1)); 
+        	   }
+
+        	    });
+           
+				// Text Font Preview 
+			//TextArea txtFontPreview = new TextArea();
+				txtFontPreview.setText("The quick brown fox jumps over the lazy dog");
+				txtFontPreview.setPrefSize(400,140);
+				txtFontPreview.setFont(new Font("Monospaced", 12));
+				//AnchorPane.setBottomAnchor(txtFontPreview, 20.0);
+				AnchorPane.setTopAnchor(txtFontPreview, 150.0);
+				AnchorPane.setLeftAnchor(txtFontPreview, 10.0);
+				
+	        fontAnchorPane.getChildren().addAll(fontCheckBox,fontNamelabel,cmbFontName,fontSizelabel,cmbFontSize,txtFontPreview);
+		    fontTab.setContent(fontAnchorPane);
+		    tabPane.getTabs().add(fontTab);
+		 
+		  
 		 // Simulator Tab
 		  Tab tabSimulator = new Tab();
 		  tabSimulator.setText("Simulator");
-		  VBox simulator_vBox = new VBox();
+		  AnchorPane  simulatorAnchorPane= new AnchorPane();
 		  
-		  Label simulatorlabel = new Label("Simulation speed (millisecond/cycle):");
-		  simulatorlabel.setStyle("-fx-padding: 2;");
+		  // simulator label
+		  simulatorlabel.setText("Simulation speed (millisecond/cycle):");
+		  AnchorPane.setTopAnchor(simulatorlabel, 10.0);
+		  AnchorPane.setLeftAnchor(simulatorlabel, 10.0);
 		  
-		  Slider slider = new Slider();
+		  // simulator slider
 		  slider.setShowTickMarks(true);
 		  slider.setShowTickLabels(true);
 		  slider.setMajorTickUnit(100f);
 		  slider.setMax(1000);
 		  slider.setMinorTickCount(50);
 		  slider.setValue(100);
-		  slider.setStyle("-fx-padding: 10;");
+		  AnchorPane.setLeftAnchor(slider, 10.0);  
+	      AnchorPane.setTopAnchor(slider, 2.0);  
+	      AnchorPane.setRightAnchor(slider, 10.0);  
+	      AnchorPane.setBottomAnchor(slider, 180.0); 
 		  slider.setOnMouseMoved((event) ->{
 			// TODO: Add Event for slider
 		  });
 		  
-		  CheckBox cbs = new CheckBox("Allow execution of none-instruction (error #270)");
+		  
+		   // Allow execution of none-instruction (error #270) checkBox 
+		  cbs.setText("Allow execution of none-instruction (error #270)");
 		  cbs.setIndeterminate(false);
-		  cbs.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
-		  
-		  CheckBox cbs2 = new CheckBox("Assume zero on reads from uninitialized memory(error #257)");
+		  AnchorPane.setTopAnchor(cbs, 100.0);
+		  AnchorPane.setLeftAnchor(cbs, 10.0);
+		
+		  // Assume zero on reads from uninitialized memory checkBox
+		  cbs2.setText("Assume zero on reads from uninitialized memory(error #257)");
 		  cbs2.setIndeterminate(false);
-		  cbs2.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
+		  AnchorPane.setTopAnchor(cbs2, 130.0);
+		  AnchorPane.setLeftAnchor(cbs2, 10.0);
 		  
-		  CheckBox cbs3 = new CheckBox("Print extra information on evaluation errors");
+		  // Print extra information on evaluation errors checkBox
+		  cbs3.setText("Print extra information on evaluation errors");
 		  cbs3.setIndeterminate(false);
-		  cbs3.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
+		  AnchorPane.setTopAnchor(cbs3, 160.0);
+		  AnchorPane.setLeftAnchor(cbs3, 10.0);
 		  
-		  CheckBox cbs4 = new CheckBox("Refersh IDE when simulation is being run");
+		  // Refersh IDE when simulation is being run checKBox
+		  cbs4.setText("Refersh IDE when simulation is being run");
 		  cbs4.setIndeterminate(false);
-		  cbs4.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
+		  AnchorPane.setTopAnchor(cbs4, 190.0);
+		  AnchorPane.setLeftAnchor(cbs4, 10.0);
 		  
-		  CheckBox cbs5 = new CheckBox("Highlight instruction line pointed by PC");
+		  // Highlight instruction line pointed by PC checkBox
+		  cbs5.setText("Highlight instruction line pointed by PC");
 		  cbs5.setIndeterminate(false);
-		  cbs5.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
-		  
-		  CheckBox cbs6 = new CheckBox("Functional simulation");
+		  AnchorPane.setTopAnchor(cbs5, 220.0);
+		  AnchorPane.setLeftAnchor(cbs5, 10.0);
+		 
+		  // Functional simulation CheckBox
+		  cbs6.setText("Functional simulation");
 		  cbs6.setIndeterminate(false);
-		  cbs6.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
+		  AnchorPane.setTopAnchor(cbs6, 250.0);
+		  AnchorPane.setLeftAnchor(cbs6, 10.0);
 		  
-		  simulator_vBox.getChildren().addAll(simulatorlabel,slider,cbs,cbs2,cbs3,cbs4,cbs5,cbs6);
-		  simulator_vBox.setSpacing(10);
-		  tabSimulator.setContent(simulator_vBox);
+		  simulatorAnchorPane.getChildren().addAll(simulatorlabel,slider,cbs,cbs2,cbs3,cbs4,cbs5,cbs6);
+	      tabSimulator.setContent(simulatorAnchorPane);
 		  tabPane.getTabs().add(tabSimulator);
+		  
 		  //Programer Tab
 		  Tab tabProgramer = new Tab();
 		  tabProgramer.setText("Programer");
-		  VBox programer_vBox = new VBox();
+          AnchorPane programerAnchorPane= new AnchorPane();
 		  
-		  CheckBox cbp = new CheckBox("Program in chunks");
-		  cbp.setStyle("-fx-padding: 2;");
+          // Program in chunks CheckBox
+		  cbp.setText("Program in chunks");
 		  cbp.setIndeterminate(false);
-		  cbp.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
+          AnchorPane.setTopAnchor(cbp, 10.0);
+		  AnchorPane.setLeftAnchor(cbp, 10.0);
 		  
-		  Label programlabel = new Label("Maximum chunk size:");
-		  programlabel.setStyle("-fx-padding: 2;");
+		 
+		  // Maximum chunk size label
+		  programlabel.setText("Maximum chunk size:");
+		  AnchorPane.setTopAnchor(programlabel, 40.0);
+		  AnchorPane.setLeftAnchor(programlabel, 10.0);
 		  
-		  TextField programtext = new TextField ();
+		  // Maximum chunk size text field
 		  programtext.setText("2048");
-		  programtext.setStyle("-fx-padding: 2;");
+		  programtext.setPrefWidth(250);
+		  AnchorPane.setTopAnchor(programtext, 40.0);
+		  AnchorPane.setLeftAnchor(programtext, 150.0);
 		  programtext.setOnAction((event) ->{
 				// TODO: Add Event 
 			  });
 		  
-	      Label programlabel2 = new Label("Receive timeout(ms):");
-	      
-	      TextField programtext2 = new TextField ();
-		  programtext2.setText("500");
-		  programtext2.setStyle("-fx-padding: 2;");
+		  // Receive timeout label
+	      programlabel2.setText("Receive timeout(ms):");
+	      AnchorPane.setTopAnchor(programlabel2, 80.0);
+		  AnchorPane.setLeftAnchor(programlabel2, 10.0);
+		  
+		  // Receive timeout text field
+	      programtext2.setText("500");
+		  programtext2.setPrefWidth(250);
+		  AnchorPane.setTopAnchor(programtext2, 80.0);
+		  AnchorPane.setLeftAnchor(programtext2, 150.0);
 		  programtext2.setOnAction((event) ->{
 			// TODO: Add Event for  TextField
 		  });
 		  
+		  
 		  Label programlabel3 = new Label("Changing any of the values above may break the programmer");
-		  programlabel.setStyle("-fx-padding: 2;");
+		  AnchorPane.setTopAnchor(programlabel3, 120.0);
+		  AnchorPane.setLeftAnchor(programlabel3, 10.0);
 		  
-		  CheckBox cbp2 = new CheckBox("Autodetect Serial Ports");
+		  // Autodetect Serial Ports CheckBox
+		  cbp2.setText("Autodetect Serial Ports");
 		  cbp2.setIndeterminate(false);
-		  cbp2.setStyle("-fx-padding: 2;");
-		  cbp2.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
+		  AnchorPane.setTopAnchor(cbp2, 160.0);
+		  AnchorPane.setLeftAnchor(cbp2, 10.0);
 		  
-		  programer_vBox.getChildren().addAll(cbp,programlabel,programtext,programlabel2,programtext2, programlabel3, cbp2);
-		  programer_vBox.setSpacing(10);
-		  tabProgramer.setContent(programer_vBox);
+		  programerAnchorPane.getChildren().addAll(cbp,programlabel,programtext,programlabel2,programtext2, programlabel3, cbp2);
+		  tabProgramer.setContent(programerAnchorPane);
 		  tabPane.getTabs().add(tabProgramer);
 		  
-		  //Miscellaneous Tab
 		  
+		  //Miscellaneous Tab
 		  Tab tabMiscellaneous = new Tab();
 		  tabMiscellaneous.setText("Miscellaneous");
-		  VBox miscellaneous_vBox = new VBox();
+		  AnchorPane miscellaneousAnchorPane = new AnchorPane();
 		  
-		  CheckBox cbm = new CheckBox("Ask before autoloading modules during startup");
+		  // Miscellaneous tab first CheckBox
+		  cbm.setText("Ask before autoloading modules during startup");
 		  cbm.setIndeterminate(false);
-		  cbm.setStyle("-fx-padding: 10;");
-		  cbm.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
-		  
-		  CheckBox cbm2 = new CheckBox("Ask for ISA for new projects");
+		  AnchorPane.setTopAnchor(cbm, 10.0);
+		  AnchorPane.setLeftAnchor(cbm, 10.0);
+		 
+		  // Miscellaneous tab second CheckBox
+		  cbm2.setText("Ask for ISA for new projects");
 		  cbm2.setIndeterminate(false);
-		  cbm2.setStyle("-fx-padding: 10;");
-		  cbm.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
-		  
-		  miscellaneous_vBox.getChildren().addAll(cbm,cbm2);
-		  miscellaneous_vBox.setSpacing(10);
-		  tabMiscellaneous.setContent(miscellaneous_vBox);
+		  AnchorPane.setTopAnchor(cbm2, 40.0);
+		  AnchorPane.setLeftAnchor(cbm2, 10.0);
+		 
+		  miscellaneousAnchorPane.getChildren().addAll(cbm,cbm2);
+		  tabMiscellaneous.setContent(miscellaneousAnchorPane);
 		  tabPane.getTabs().add(tabMiscellaneous);
 		  
 		  // View Tab
 		  Tab tabView = new Tab();
 		  tabView.setText("View");
-		  VBox view_vbox = new VBox();
-		  CheckBox cbv = new CheckBox("Disable the view of Project Explorer");
+		  AnchorPane viewAnchorPane = new AnchorPane();
+		  
+		 // view tab first CheckBox
+		  cbv.setText("Hide the view of Project Explorer");
 		  cbv.setIndeterminate(false);
-		  cbv.setStyle("-fx-padding: 10;");
-		  cbv.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
-		  
-		  CheckBox cbv2 = new CheckBox("Disable the view of Toolbar");
-		  cbv2.setIndeterminate(false);
-		  cbv2.setStyle("-fx-padding: 10;");
-		  cbv2.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
-		  
-		  CheckBox cbv3 = new CheckBox("Disable the view of console");
-		  cbv3.setIndeterminate(false);
-		  cbv3.setStyle("-fx-padding: 10;");
-		  cbv3.setOnAction((event) ->{
-			// TODO: Add Event for Checkbox
-		  });
-		  
-		  view_vbox.getChildren().addAll(cbv,cbv2,cbv3);
-		  view_vbox.setSpacing(10);
-		  tabView.setContent(view_vbox);
+		  AnchorPane.setTopAnchor(cbv, 10.0);
+		  AnchorPane.setLeftAnchor(cbv, 10.0);
+		 
 		
+		  // Disable the view of Toolbar CheckBox
+		  cbv2.setText("Hide the view of Toolbar");
+		  cbv2.setIndeterminate(false);
+		  AnchorPane.setTopAnchor(cbv2, 40.0);
+		  AnchorPane.setLeftAnchor(cbv2, 10.0);
+		  
+		  
+		  //Disable the view of Console CheckBox
+		  cbv3.setText("Hide the view of Console");
+		  cbv3.setIndeterminate(false);
+		  AnchorPane.setTopAnchor(cbv3, 70.0);
+		  AnchorPane.setLeftAnchor(cbv3, 10.0);
+		  
+		 
+		  viewAnchorPane.getChildren().addAll(cbv,cbv2,cbv3);
+		  tabView.setContent(viewAnchorPane);
 		  tabPane.getTabs().add(tabView);
 		  tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-		
-        Button createProject = new Button("Apply");
-		createProject.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e)
-			{ // TODO: Add Event for Button
-				}
-			
+		  
+		 // Apply Button
+	    Button apply = new Button("Apply");
+		 
+          apply.setOnAction((event) ->{
+		// TODO: Add Event for Button
+        	 
 			});
-
-		createProject.setDefaultButton(true);
-		Button cancelCreate = new Button("Close");
-		cancelCreate.setOnAction(new EventHandler<ActionEvent>() {
+	
+        
+       
+          apply.setDefaultButton(true);
+          
+         // Close Button
+		Button cancel = new Button("Close");
+		cancel.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e)
 			{
-				Stage stage = (Stage) cancelCreate.getScene().getWindow();
+				Stage stage = (Stage) cancel.getScene().getWindow();
 				stage.close();
 			}
 		});
 
 		grid.add(tabPane, 0, 0);
-		border.setCenter(grid);
+	    border.setCenter(grid);
 
-		buttons.getChildren().addAll(createProject, cancelCreate);
+		buttons.getChildren().addAll(apply, cancel);
 		buttons.setAlignment(Pos.BASELINE_RIGHT);
 		border.setBottom(buttons);
 
 		return Components.wrap(border);
 
 		}
+ 
 }
