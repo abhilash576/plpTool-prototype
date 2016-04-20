@@ -98,6 +98,7 @@ import edu.asu.plp.tool.prototype.util.Dialogues;
 import edu.asu.plp.tool.prototype.view.CodeEditor;
 import edu.asu.plp.tool.prototype.view.ConsolePane;
 import edu.asu.plp.tool.prototype.view.CpuWindow;
+import edu.asu.plp.tool.prototype.view.MemoryVisualizationWindow;
 import edu.asu.plp.tool.prototype.view.OutlineView;
 import edu.asu.plp.tool.prototype.view.ProjectExplorerTree;
 import edu.asu.plp.tool.prototype.view.QuickViewPanel;
@@ -1036,6 +1037,18 @@ public class Main extends Application implements Controller
 		createCpuStage.setTitle("PLP CPU Core Simulation");
 		createCpuStage.setScene(scene);
 		createCpuStage.show();
+	}
+	
+	public void openMemoryVisualizationWindow()
+	{
+		 Stage memoryVisualizationStage = new Stage();
+		 MemoryVisualizationWindow memoryVisualizationDisplay = new MemoryVisualizationWindow();
+	     Scene scene = new Scene(memoryVisualizationDisplay,500,600);
+	     memoryVisualizationStage.setTitle("PLP CPU Memory Visualization");
+	     memoryVisualizationStage.setScene(scene);
+	     memoryVisualizationStage.setResizable(false);
+	     memoryVisualizationStage.show();
+		
 	}
 	
 	private boolean optionsMenuOkSelected(List<Submittable> submittables)
