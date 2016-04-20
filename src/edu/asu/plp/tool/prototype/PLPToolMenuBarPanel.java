@@ -144,7 +144,8 @@ public class PLPToolMenuBarPanel extends BorderPane
 		// TODO: itemASMView.setOnAction(); {{what does this button do?}}
 		
 		MenuItem itemCreateMemVis = new MenuItem("Create a PLP CPU Memory Visualizer");
-		// TODO: itemCreateMemVis.setOnAction(); {{what does this button do?}}
+	    itemCreateMemVis.setOnAction((e) -> controller.openMemoryVisualizationWindow());
+	   
 		
 		MenuItem itemRemoveMemVis = new MenuItem("Remove Memory Visualizers from Project");
 		// TODO: itemRemoveMemVis.setOnAction(); {{what does this button do?}}
